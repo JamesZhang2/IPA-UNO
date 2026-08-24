@@ -2,7 +2,18 @@
 
 Read README.md for basic information about the project.
 
-This is a Vite/React + TypeScript web app.
+## Architecture
+
+The repo is split into two independently built parts:
+
+- `frontend/` — Vite + React + TypeScript single-page app. Presentation and input only.
+- `backend/` — Java + Spring Boot service. Owns the authoritative game state and rules. Not yet created; it lands in a follow-up commit.
+
+All game rules live in the backend: deck construction, shuffling, feature matching (a card must share at least 2 of its 3 features with the previous card), turn validation, and wildcard resolution. The frontend renders whatever state it is given and sends player actions; it never decides whether a move is legal.
+
+Hands are hidden information, so the backend sends each player a redacted view of the game state in which other players' hands are reduced to card counts. DO NOT send full game state to a client.
+
+Run npm commands from `frontend/` and build commands from `backend/`; there is no package manifest at the repo root.
 
 ## DOs and DON'Ts
 
