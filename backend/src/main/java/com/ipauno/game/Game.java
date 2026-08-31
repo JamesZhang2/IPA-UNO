@@ -15,7 +15,9 @@ public class Game {
     private static final int HAND_SIZE = 7;
 
     private final List<PulmonicConsonant> hand;
+    // The last card in the draw pile is the next card to be drawn.
     private final Deque<PulmonicConsonant> drawPile;
+    // The last card in the discard pile is the top card of the discard pile.
     private final Deque<PulmonicConsonant> discardPile;
     private GameStatus status;
 
