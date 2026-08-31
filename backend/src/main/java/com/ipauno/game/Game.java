@@ -1,5 +1,6 @@
 package com.ipauno.game;
 
+import com.ipauno.model.FeatureMatcher;
 import com.ipauno.model.PulmonicConsonant;
 import com.ipauno.model.PulmonicConsonantCatalog;
 import java.util.ArrayDeque;
@@ -40,6 +41,55 @@ public class Game {
         Deque<PulmonicConsonant> drawPile = new ArrayDeque<>(deck.subList(HAND_SIZE + 1, deck.size()));
 
         return new Game(hand, drawPile, discardPile, GameStatus.IN_PROGRESS);
+    }
+
+    // Package-private test helper
+    static Game fromState(
+            List<PulmonicConsonant> hand,
+            List<PulmonicConsonant> drawPile,
+            List<PulmonicConsonant> discardPile,
+            GameStatus status) {
+        return new Game(
+                new ArrayList<>(hand),
+                new ArrayDeque<>(drawPile),
+                new ArrayDeque<>(discardPile),
+                status);
+    }
+
+    public void play(String cardId) {
+        if (status == GameStatus.WON) {
+            throw new IllegalGameActionException("Game is already won");
+        }
+
+        PulmonicConsonant cardToPlay = getUniqueCardInHand(cardId);
+
+        PulmonicConsonant target = discardPile.peekLast();
+        if (!FeatureMatcher.isLegal(cardToPlay, target)) {
+            throw new IllegalGameActionException(FeatureMatcher.explainIllegalPlay(cardToPlay, target));
+        }
+
+        hand.remove(cardToPlay);
+        discardPile.addLast(cardToPlay);
+        if (hand.isEmpty()) {
+            status = GameStatus.WON;
+        }
+    }
+
+    private PulmonicConsonant getUniqueCardInHand(String cardId) {
+        PulmonicConsonant match = null;
+        for (PulmonicConsonant card : hand) {
+            if (!card.id().equals(cardId)) {
+                continue;
+            }
+            if (match != null) {
+                throw new IllegalStateException("Duplicate card id in hand: " + cardId);
+            }
+            match = card;
+        }
+        if (match == null) {
+            throw new IllegalGameActionException("Card not in hand");
+        }
+        return match;
     }
 
     public GameStatus status() {
