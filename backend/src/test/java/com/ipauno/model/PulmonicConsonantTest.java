@@ -55,8 +55,9 @@ class PulmonicConsonantTest {
     void voicingEnumCoversVoicedAndVoiceless() {
         Set<String> expected = Set.of("VOICED", "VOICELESS");
 
-        Set<String> actual =
-                Arrays.stream(Voicing.values()).map(Enum::name).collect(Collectors.toSet());
+        Set<String> actual = Arrays.stream(Voicing.values())
+                .map(Enum::name)
+                .collect(Collectors.toSet());
 
         assertEquals(expected, actual);
     }

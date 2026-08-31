@@ -65,8 +65,12 @@ class GameControllerTest {
 
     @Test
     void postReplacesAnExistingGame() throws Exception {
-        mockMvc.perform(post("/api/newGame")).andExpect(status().isOk()).andExpect(jsonPath("$.hand", hasSize(7)));
+        mockMvc.perform(post("/api/newGame"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.hand", hasSize(7)));
 
-        mockMvc.perform(post("/api/newGame")).andExpect(status().isOk()).andExpect(jsonPath("$.hand", hasSize(7)));
+        mockMvc.perform(post("/api/newGame"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.hand", hasSize(7)));
     }
 }

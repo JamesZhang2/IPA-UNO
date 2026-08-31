@@ -5,7 +5,8 @@ import java.util.List;
 
 public final class FeatureMatcher {
 
-    private FeatureMatcher() {}
+    private FeatureMatcher() {
+    }
 
     // TODO: a wildcard on the discard pile should short-circuit matching before this logic runs.
 
@@ -18,7 +19,8 @@ public final class FeatureMatcher {
     }
 
     public static String explainIllegalPlay(PulmonicConsonant played, PulmonicConsonant target) {
-        return describe(played) + " while " + describe(target) + ". " + matchSummary(played, target);
+        return describe(played) + " while " + describe(target) + ". "
+                + matchSummary(played, target);
     }
 
     private static String featurePhrase(PulmonicConsonant card) {
@@ -40,7 +42,8 @@ public final class FeatureMatcher {
         return switch (matched.size()) {
             case 0 -> "No features match; you need at least 2 of 3.";
             case 1 -> "Only " + matched.getFirst() + " matches; you need at least 2 of 3.";
-            default -> "Only " + String.join(" and ", matched) + " match; you need at least 2 of 3.";
+            default ->
+                "Only " + String.join(" and ", matched) + " match; you need at least 2 of 3.";
         };
     }
 

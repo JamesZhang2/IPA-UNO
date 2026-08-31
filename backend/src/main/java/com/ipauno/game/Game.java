@@ -21,11 +21,8 @@ public class Game {
     private final Deque<PulmonicConsonant> discardPile;
     private GameStatus status;
 
-    private Game(
-            List<PulmonicConsonant> hand,
-            Deque<PulmonicConsonant> drawPile,
-            Deque<PulmonicConsonant> discardPile,
-            GameStatus status) {
+    private Game(List<PulmonicConsonant> hand, Deque<PulmonicConsonant> drawPile,
+            Deque<PulmonicConsonant> discardPile, GameStatus status) {
         this.hand = hand;
         this.drawPile = drawPile;
         this.discardPile = discardPile;
@@ -40,7 +37,8 @@ public class Game {
         Deque<PulmonicConsonant> discardPile = new ArrayDeque<>();
         discardPile.addLast(deck.get(HAND_SIZE));
 
-        Deque<PulmonicConsonant> drawPile = new ArrayDeque<>(deck.subList(HAND_SIZE + 1, deck.size()));
+        Deque<PulmonicConsonant> drawPile = new ArrayDeque<>(
+                deck.subList(HAND_SIZE + 1, deck.size()));
 
         return new Game(hand, drawPile, discardPile, GameStatus.IN_PROGRESS);
     }
@@ -67,7 +65,8 @@ public class Game {
 
         PulmonicConsonant target = discardPile.peekLast();
         if (!FeatureMatcher.isLegal(cardToPlay, target)) {
-            throw new IllegalGameActionException(FeatureMatcher.explainIllegalPlay(cardToPlay, target));
+            throw new IllegalGameActionException(
+                    FeatureMatcher.explainIllegalPlay(cardToPlay, target));
         }
 
         hand.remove(cardToPlay);

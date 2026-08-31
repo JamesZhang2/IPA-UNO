@@ -19,8 +19,8 @@ class CorsConfigTest {
 
     @Test
     void allowsPreflightFromTheViteDevServer() throws Exception {
-        mockMvc.perform(options("/api/status")
-                        .header("Origin", "http://localhost:5173")
+        mockMvc.perform(
+                options("/api/status").header("Origin", "http://localhost:5173")
                         .header("Access-Control-Request-Method", "GET"))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:5173"));
@@ -28,8 +28,8 @@ class CorsConfigTest {
 
     @Test
     void doesNotAllowPreflightFromAnUnknownOrigin() throws Exception {
-        mockMvc.perform(options("/api/status")
-                        .header("Origin", "https://evil.example.com")
+        mockMvc.perform(
+                options("/api/status").header("Origin", "https://evil.example.com")
                         .header("Access-Control-Request-Method", "GET"))
                 .andExpect(status().isForbidden());
     }

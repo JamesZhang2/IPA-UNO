@@ -9,7 +9,8 @@ import java.util.List;
 
 public final class PulmonicConsonantCatalog {
 
-    private PulmonicConsonantCatalog() {}
+    private PulmonicConsonantCatalog() {
+    }
 
     public static List<PulmonicConsonant> createDeck() {
         List<PulmonicConsonant> deck = new ArrayList<>(CHART.size() * 2);
@@ -21,14 +22,19 @@ public final class PulmonicConsonantCatalog {
     }
 
     private static ChartEntry entry(
-            String symbol, MannerOfArticulation manner, PlaceOfArticulation place, Voicing voicing) {
+            String symbol,
+            MannerOfArticulation manner,
+            PlaceOfArticulation place,
+            Voicing voicing) {
         return new ChartEntry(symbol, manner, place, voicing);
     }
 
     private record ChartEntry(
-            String symbol, MannerOfArticulation manner, PlaceOfArticulation place, Voicing voicing) {
+            String symbol,
+            MannerOfArticulation manner,
+            PlaceOfArticulation place,
+            Voicing voicing) {
 
-    
         PulmonicConsonant toCard(int copyIndex) {
             return new PulmonicConsonant(symbol + "#" + copyIndex, manner, place, voicing, symbol);
         }

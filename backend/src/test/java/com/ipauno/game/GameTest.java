@@ -54,10 +54,13 @@ class GameTest {
 
     @Test
     void dealShufflesCardsBeforeDrawing() {
-        List<String> catalogOrder = PulmonicConsonantCatalog.createDeck().stream()
+        List<String> catalogOrder = PulmonicConsonantCatalog.createDeck()
+                .stream()
                 .map(PulmonicConsonant::id)
                 .toList();
-        List<String> dealtHand = Game.dealNew(new Random(0)).hand().stream()
+        List<String> dealtHand = Game.dealNew(new Random(0))
+                .hand()
+                .stream()
                 .map(PulmonicConsonant::id)
                 .toList();
 

@@ -41,7 +41,8 @@ class GameViewTest {
         GameView view = game.toGameView();
 
         assertEquals(
-                game.hand().stream()
+                game.hand()
+                        .stream()
                         .filter(card -> FeatureMatcher.isLegal(card, T))
                         .map(PulmonicConsonant::id)
                         .toList(),

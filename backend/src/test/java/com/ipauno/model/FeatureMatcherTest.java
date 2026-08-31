@@ -8,20 +8,48 @@ import org.junit.jupiter.api.Test;
 
 class FeatureMatcherTest {
 
-    private static final PulmonicConsonant B = card("b#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.BILABIAL,
-            Voicing.VOICED, "b");
-    private static final PulmonicConsonant B_COPY = card("b#1", MannerOfArticulation.PLOSIVE,
-            PlaceOfArticulation.BILABIAL, Voicing.VOICED, "b");
-    private static final PulmonicConsonant T = card("t#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR,
-            Voicing.VOICELESS, "t");
-    private static final PulmonicConsonant D = card("d#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR,
-            Voicing.VOICED, "d");
-    private static final PulmonicConsonant P = card("p#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.BILABIAL,
-            Voicing.VOICELESS, "p");
-    private static final PulmonicConsonant F = card("f#0", MannerOfArticulation.FRICATIVE,
-            PlaceOfArticulation.LABIODENTAL, Voicing.VOICELESS, "f");
-    private static final PulmonicConsonant M = card("m#0", MannerOfArticulation.NASAL, PlaceOfArticulation.BILABIAL,
-            Voicing.VOICED, "m");
+    private static final PulmonicConsonant B = card(
+            "b#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.BILABIAL,
+            Voicing.VOICED,
+            "b");
+    private static final PulmonicConsonant B_COPY = card(
+            "b#1",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.BILABIAL,
+            Voicing.VOICED,
+            "b");
+    private static final PulmonicConsonant T = card(
+            "t#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.ALVEOLAR,
+            Voicing.VOICELESS,
+            "t");
+    private static final PulmonicConsonant D = card(
+            "d#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.ALVEOLAR,
+            Voicing.VOICED,
+            "d");
+    private static final PulmonicConsonant P = card(
+            "p#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.BILABIAL,
+            Voicing.VOICELESS,
+            "p");
+    private static final PulmonicConsonant F = card(
+            "f#0",
+            MannerOfArticulation.FRICATIVE,
+            PlaceOfArticulation.LABIODENTAL,
+            Voicing.VOICELESS,
+            "f");
+    private static final PulmonicConsonant M = card(
+            "m#0",
+            MannerOfArticulation.NASAL,
+            PlaceOfArticulation.BILABIAL,
+            Voicing.VOICED,
+            "m");
 
     @Test
     void allThreeFeaturesMatchingIsLegal() {

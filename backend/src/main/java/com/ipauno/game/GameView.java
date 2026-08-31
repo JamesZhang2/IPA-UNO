@@ -7,4 +7,5 @@ public record GameView(
         CardView topCard,
         List<CardView> hand,
         int drawPileCount,
-        List<String> playableCardIds) {}
+        List<String> playableCardIds) {
+}

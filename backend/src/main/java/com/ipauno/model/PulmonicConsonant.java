@@ -5,5 +5,5 @@ public record PulmonicConsonant(
         MannerOfArticulation manner,
         PlaceOfArticulation place,
         Voicing voicing,
-        String symbol)
-        implements Card {}
+        String symbol) implements Card {
+}

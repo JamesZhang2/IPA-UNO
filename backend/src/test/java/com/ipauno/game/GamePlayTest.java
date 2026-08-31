@@ -25,7 +25,9 @@ class GamePlayTest {
     void playRejectsCardNotInHand() {
         Game game = Game.fromState(List.of(P), List.of(), List.of(T), GameStatus.IN_PROGRESS);
 
-        IllegalGameActionException error = assertThrows(IllegalGameActionException.class, () -> game.play("d#0"));
+        IllegalGameActionException error = assertThrows(
+                IllegalGameActionException.class,
+                () -> game.play("d#0"));
 
         assertEquals("Card not in hand", error.getMessage());
         assertEquals(List.of("p#0"), handIds(game));
@@ -36,7 +38,9 @@ class GamePlayTest {
     void playRejectsIllegalFeatureMatchWithDescriptiveMessage() {
         Game game = Game.fromState(List.of(B), List.of(), List.of(T), GameStatus.IN_PROGRESS);
 
-        IllegalGameActionException error = assertThrows(IllegalGameActionException.class, () -> game.play("b#0"));
+        IllegalGameActionException error = assertThrows(
+                IllegalGameActionException.class,
+                () -> game.play("b#0"));
 
         assertEquals(FeatureMatcher.explainIllegalPlay(B, T), error.getMessage());
         assertEquals(List.of("b#0"), handIds(game));

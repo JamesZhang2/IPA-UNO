@@ -8,22 +8,54 @@ import java.util.List;
 
 final class GameTestFixture {
 
-    public static final PulmonicConsonant B = card("b#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.BILABIAL,
-            Voicing.VOICED, "b");
-    public static final PulmonicConsonant T = card("t#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR,
-            Voicing.VOICELESS, "t");
-    public static final PulmonicConsonant D = card("d#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR,
-            Voicing.VOICED, "d");
-    public static final PulmonicConsonant P = card("p#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.BILABIAL,
-            Voicing.VOICELESS, "p");
-    public static final PulmonicConsonant K = card("k#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.VELAR,
-            Voicing.VOICELESS, "k");
-    public static final PulmonicConsonant G = card("g#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.VELAR,
-            Voicing.VOICED, "g");
-    public static final PulmonicConsonant S = card("s#0", MannerOfArticulation.FRICATIVE, PlaceOfArticulation.ALVEOLAR,
-            Voicing.VOICELESS, "s");
-    public static final PulmonicConsonant Z = card("z#0", MannerOfArticulation.FRICATIVE, PlaceOfArticulation.ALVEOLAR,
-            Voicing.VOICED, "z");
+    public static final PulmonicConsonant B = card(
+            "b#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.BILABIAL,
+            Voicing.VOICED,
+            "b");
+    public static final PulmonicConsonant T = card(
+            "t#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.ALVEOLAR,
+            Voicing.VOICELESS,
+            "t");
+    public static final PulmonicConsonant D = card(
+            "d#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.ALVEOLAR,
+            Voicing.VOICED,
+            "d");
+    public static final PulmonicConsonant P = card(
+            "p#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.BILABIAL,
+            Voicing.VOICELESS,
+            "p");
+    public static final PulmonicConsonant K = card(
+            "k#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.VELAR,
+            Voicing.VOICELESS,
+            "k");
+    public static final PulmonicConsonant G = card(
+            "g#0",
+            MannerOfArticulation.PLOSIVE,
+            PlaceOfArticulation.VELAR,
+            Voicing.VOICED,
+            "g");
+    public static final PulmonicConsonant S = card(
+            "s#0",
+            MannerOfArticulation.FRICATIVE,
+            PlaceOfArticulation.ALVEOLAR,
+            Voicing.VOICELESS,
+            "s");
+    public static final PulmonicConsonant Z = card(
+            "z#0",
+            MannerOfArticulation.FRICATIVE,
+            PlaceOfArticulation.ALVEOLAR,
+            Voicing.VOICED,
+            "z");
 
     private GameTestFixture() {
     }

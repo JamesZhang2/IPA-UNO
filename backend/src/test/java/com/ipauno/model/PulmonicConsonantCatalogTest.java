@@ -34,15 +34,17 @@ class PulmonicConsonantCatalogTest {
         deck.stream()
                 .collect(Collectors.groupingBy(PulmonicConsonant::symbol))
                 .forEach((symbol, copies) -> {
-                    Set<String> copyIds =
-                            copies.stream().map(PulmonicConsonant::id).collect(Collectors.toSet());
+                    Set<String> copyIds = copies.stream()
+                            .map(PulmonicConsonant::id)
+                            .collect(Collectors.toSet());
                     assertEquals(Set.of(symbol + "#0", symbol + "#1"), copyIds);
                 });
     }
 
     @Test
     void bothCopiesOfASymbolShareTheSameFeatures() {
-        PulmonicConsonantCatalog.createDeck().stream()
+        PulmonicConsonantCatalog.createDeck()
+                .stream()
                 .collect(Collectors.groupingBy(PulmonicConsonant::symbol))
                 .forEach((symbol, copies) -> {
                     PulmonicConsonant first = copies.getFirst();
@@ -65,10 +67,26 @@ class PulmonicConsonantCatalogTest {
                 MannerOfArticulation.FRICATIVE,
                 PlaceOfArticulation.POSTALVEOLAR,
                 Voicing.VOICELESS);
-        assertFeatures("t", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR, Voicing.VOICELESS);
-        assertFeatures("n", MannerOfArticulation.NASAL, PlaceOfArticulation.ALVEOLAR, Voicing.VOICED);
-        assertFeatures("h", MannerOfArticulation.FRICATIVE, PlaceOfArticulation.GLOTTAL, Voicing.VOICELESS);
-        assertFeatures("ʔ", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.GLOTTAL, Voicing.VOICELESS);
+        assertFeatures(
+                "t",
+                MannerOfArticulation.PLOSIVE,
+                PlaceOfArticulation.ALVEOLAR,
+                Voicing.VOICELESS);
+        assertFeatures(
+                "n",
+                MannerOfArticulation.NASAL,
+                PlaceOfArticulation.ALVEOLAR,
+                Voicing.VOICED);
+        assertFeatures(
+                "h",
+                MannerOfArticulation.FRICATIVE,
+                PlaceOfArticulation.GLOTTAL,
+                Voicing.VOICELESS);
+        assertFeatures(
+                "ʔ",
+                MannerOfArticulation.PLOSIVE,
+                PlaceOfArticulation.GLOTTAL,
+                Voicing.VOICELESS);
     }
 
     private static void assertFeatures(
@@ -76,7 +94,8 @@ class PulmonicConsonantCatalogTest {
             MannerOfArticulation manner,
             PlaceOfArticulation place,
             Voicing voicing) {
-        PulmonicConsonant card = PulmonicConsonantCatalog.createDeck().stream()
+        PulmonicConsonant card = PulmonicConsonantCatalog.createDeck()
+                .stream()
                 .filter(c -> c.symbol().equals(symbol))
                 .findFirst()
                 .orElse(null);
