@@ -1,7 +1,9 @@
 package com.ipauno.api;
 
+import com.ipauno.game.GameNotFoundException;
 import com.ipauno.game.GameService;
 import com.ipauno.game.GameView;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +21,10 @@ public class GameController {
     @PostMapping("/newGame")
     public GameView newGame() {
         return gameService.startNewGame().toGameView();
+    }
+
+    @GetMapping("/game")
+    public GameView getGame() {
+        return gameService.getCurrentGameView().orElseThrow(GameNotFoundException::new);
     }
 }

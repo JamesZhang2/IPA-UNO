@@ -21,4 +21,8 @@ public class GameService {
     public Optional<Game> getCurrentGame() {
         return Optional.ofNullable(currentGame);
     }
+
+    public Optional<GameView> getCurrentGameView() {
+        return getCurrentGame().map(Game::toGameView);
+    }
 }
