@@ -1,5 +1,6 @@
 package com.ipauno.game;
 
+import static com.ipauno.game.GameTestFixtures.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,19 +14,6 @@ import org.junit.jupiter.api.Test;
 
 class GameViewTest {
 
-    private static final PulmonicConsonant B =
-            card("b#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.BILABIAL, Voicing.VOICED, "b");
-    private static final PulmonicConsonant T =
-            card("t#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR, Voicing.VOICELESS, "t");
-    private static final PulmonicConsonant D =
-            card("d#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.ALVEOLAR, Voicing.VOICED, "d");
-    private static final PulmonicConsonant P =
-            card("p#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.BILABIAL, Voicing.VOICELESS, "p");
-    private static final PulmonicConsonant K =
-            card("k#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.VELAR, Voicing.VOICELESS, "k");
-    private static final PulmonicConsonant G =
-            card("g#0", MannerOfArticulation.PLOSIVE, PlaceOfArticulation.VELAR, Voicing.VOICED, "g");
-
     @Test
     void viewExposesDrawPileCountButNotDrawPileContents() {
         Game game = Game.fromState(List.of(P), List.of(K, G), List.of(T), GameStatus.IN_PROGRESS);
@@ -38,9 +26,7 @@ class GameViewTest {
 
     @Test
     void viewExposesOnlyDiscardTopNotBuriedCards() {
-        PulmonicConsonant buried = card("s#0", MannerOfArticulation.FRICATIVE, PlaceOfArticulation.ALVEOLAR,
-                Voicing.VOICELESS, "s");
-        Game game = Game.fromState(List.of(P), List.of(), List.of(buried, T), GameStatus.IN_PROGRESS);
+        Game game = Game.fromState(List.of(P), List.of(), List.of(S, T), GameStatus.IN_PROGRESS);
 
         GameView view = game.toGameView();
 
@@ -85,18 +71,5 @@ class GameViewTest {
         assertEquals(MannerOfArticulation.PLOSIVE, topCard.manner());
         assertEquals(PlaceOfArticulation.ALVEOLAR, topCard.place());
         assertEquals(Voicing.VOICELESS, topCard.voicing());
-    }
-
-    private static List<String> handIds(GameView view) {
-        return view.hand().stream().map(CardView::id).toList();
-    }
-
-    private static PulmonicConsonant card(
-            String id,
-            MannerOfArticulation manner,
-            PlaceOfArticulation place,
-            Voicing voicing,
-            String symbol) {
-        return new PulmonicConsonant(id, manner, place, voicing, symbol);
     }
 }
