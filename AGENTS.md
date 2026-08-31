@@ -1,6 +1,6 @@
 # IPA-UNO
 
-Read README.md for basic information about the project.
+Read README.md for basic information about the project. Also read TODO.md for potential future features/extensions to this project.
 
 ## Architecture
 

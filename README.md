@@ -39,4 +39,10 @@ npm run build
 
 ## AI Usage Disclosure
 
-I used Cursor heavily when building this project.
+I used Cursor heavily when building this project. This project is more or less an experiment on how fast I can build with AI without the project falling apart. I'm still making design decisions and deciding which features to build, but AI is doing most of the coding.
+
+This is one of many small side projects that I had ideas for, but previously not enough time or motivation to work on. If the experiment goes well, I might build more fun personal projects with AI in the future.
+
+## PS
+
+This project is just one specific way of generalizing UNO (with IPA symbols). In general, UNO can be generalized as follows: Take $N$ sets $S_1, \ldots, S_N$. Cards are a subset of $S_1 \times \ldots \times S_N \times \mathbb{N}$, where the last $\mathbb{N}$ is for duplicates of the same card. A play from $(a_1, \ldots, a_n, a)$ to $(b_1, \ldots, b_n, b)$ is allowed if and only if $(a_1, \ldots, a_n)$ and $(b_1, \ldots, b_n)$ differ in at most one coordinate.
