@@ -48,8 +48,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.status").value("IN_PROGRESS"))
                 .andExpect(jsonPath("$.hand", hasSize(7)))
                 .andExpect(jsonPath("$.topCard.id").exists())
-                .andExpect(jsonPath("$.drawPileCount").isNumber())
-                .andExpect(jsonPath("$.playableCardIds").isArray());
+                .andExpect(jsonPath("$.drawPileCount").isNumber());
     }
 
     @Test
@@ -59,8 +58,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.status").value("IN_PROGRESS"))
                 .andExpect(jsonPath("$.hand", hasSize(7)))
                 .andExpect(jsonPath("$.topCard.id").exists())
-                .andExpect(jsonPath("$.drawPileCount").isNumber())
-                .andExpect(jsonPath("$.playableCardIds").isArray());
+                .andExpect(jsonPath("$.drawPileCount").isNumber());
     }
 
     @Test

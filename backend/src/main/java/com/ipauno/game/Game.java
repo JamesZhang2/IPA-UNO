@@ -129,17 +129,12 @@ public class Game {
 
     public GameView toGameView() {
         PulmonicConsonant top = discardPile.peekLast();
-        List<String> playableCardIds = hand.stream()
-                .filter(card -> FeatureMatcher.isLegal(card, top))
-                .map(PulmonicConsonant::id)
-                .toList();
 
         return new GameView(
                 status,
                 CardView.from(top),
                 hand.stream().map(CardView::from).toList(),
-                drawPile.size(),
-                playableCardIds);
+                drawPile.size());
     }
 
     List<PulmonicConsonant> hand() {

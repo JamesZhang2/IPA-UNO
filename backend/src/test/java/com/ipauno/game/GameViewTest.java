@@ -4,10 +4,8 @@ import static com.ipauno.game.GameTestFixture.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ipauno.model.FeatureMatcher;
 import com.ipauno.model.MannerOfArticulation;
 import com.ipauno.model.PlaceOfArticulation;
-import com.ipauno.model.PulmonicConsonant;
 import com.ipauno.model.Voicing;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -35,22 +33,6 @@ class GameViewTest {
     }
 
     @Test
-    void playableCardIdsMatchFeatureMatcher() {
-        Game game = Game.fromState(List.of(D, B), List.of(), List.of(T), GameStatus.IN_PROGRESS);
-
-        GameView view = game.toGameView();
-
-        assertEquals(
-                game.hand()
-                        .stream()
-                        .filter(card -> FeatureMatcher.isLegal(card, T))
-                        .map(PulmonicConsonant::id)
-                        .toList(),
-                view.playableCardIds());
-        assertEquals(List.of("d#0"), view.playableCardIds());
-    }
-
-    @Test
     void wonGameHasEmptyHand() {
         Game game = Game.fromState(List.of(), List.of(), List.of(T), GameStatus.WON);
 
@@ -58,7 +40,6 @@ class GameViewTest {
 
         assertEquals(GameStatus.WON, view.status());
         assertTrue(view.hand().isEmpty());
-        assertTrue(view.playableCardIds().isEmpty());
     }
 
     @Test
