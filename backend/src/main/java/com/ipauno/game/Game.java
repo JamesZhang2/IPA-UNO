@@ -75,6 +75,23 @@ public class Game {
         }
     }
 
+    public void draw() {
+        if (status == GameStatus.WON) {
+            throw new IllegalGameActionException("Game is already won");
+        }
+
+        if (drawPile.isEmpty()) {
+            reshuffleDiscardIntoDrawPile();
+        }
+
+        PulmonicConsonant drawn = drawPile.pollLast();
+        if (drawn == null) {
+            throw new IllegalGameActionException("Draw pile is empty");
+        }
+
+        hand.add(drawn);
+    }
+
     private PulmonicConsonant getUniqueCardInHand(String cardId) {
         PulmonicConsonant match = null;
         for (PulmonicConsonant card : hand) {
@@ -90,6 +107,19 @@ public class Game {
             throw new IllegalGameActionException("Card not in hand");
         }
         return match;
+    }
+
+    private void reshuffleDiscardIntoDrawPile() {
+        if (discardPile.size() <= 1) {
+            return;
+        }
+
+        PulmonicConsonant top = discardPile.removeLast();
+        List<PulmonicConsonant> buried = new ArrayList<>(discardPile);
+        discardPile.clear();
+        discardPile.addLast(top);
+        Collections.shuffle(buried);
+        drawPile.addAll(buried);
     }
 
     public GameStatus status() {
