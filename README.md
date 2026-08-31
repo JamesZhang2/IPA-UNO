@@ -36,3 +36,7 @@ The frontend does not have a test runner configured yet. The closest checks are:
 npm run lint
 npm run build
 ```
+
+## AI Usage Disclosure
+
+I used Cursor heavily when building this project.
