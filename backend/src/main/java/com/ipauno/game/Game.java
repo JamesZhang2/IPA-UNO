@@ -126,6 +126,21 @@ public class Game {
         return status;
     }
 
+    public GameView toGameView() {
+        PulmonicConsonant top = discardPile.peekLast();
+        List<String> playableCardIds = hand.stream()
+                .filter(card -> FeatureMatcher.isLegal(card, top))
+                .map(PulmonicConsonant::id)
+                .toList();
+
+        return new GameView(
+                status,
+                CardView.from(top),
+                hand.stream().map(CardView::from).toList(),
+                drawPile.size(),
+                playableCardIds);
+    }
+
     List<PulmonicConsonant> hand() {
         return List.copyOf(hand);
     }
