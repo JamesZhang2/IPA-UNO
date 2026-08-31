@@ -1,6 +1,6 @@
 package com.ipauno.game;
 
-import static com.ipauno.game.GameTestFixtures.*;
+import static com.ipauno.game.GameTestFixture.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
