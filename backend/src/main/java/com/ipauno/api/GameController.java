@@ -27,4 +27,9 @@ public class GameController {
     public GameView getGame() {
         return gameService.getCurrentGameView().orElseThrow(GameNotFoundException::new);
     }
+
+    @PostMapping("/game/draw")
+    public GameView draw() {
+        return gameService.draw();
+    }
 }

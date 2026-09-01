@@ -25,4 +25,10 @@ public class GameService {
     public Optional<GameView> getCurrentGameView() {
         return getCurrentGame().map(Game::toGameView);
     }
+
+    public GameView draw() {
+        Game game = getCurrentGame().orElseThrow(GameNotFoundException::new);
+        game.draw();
+        return game.toGameView();
+    }
 }

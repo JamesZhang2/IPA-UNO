@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,13 @@ class GameControllerTest {
         @Test
         void getReturns404() throws Exception {
             mockMvc.perform(get("/api/game"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("No game in progress"));
+        }
+
+        @Test
+        void drawReturns404() throws Exception {
+            mockMvc.perform(post("/api/game/draw"))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.message").value("No game in progress"));
         }
@@ -70,5 +78,25 @@ class GameControllerTest {
         mockMvc.perform(post("/api/newGame"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.hand", hasSize(7)));
+    }
+
+    @Test
+    void drawReturnsUpdatedView() throws Exception {
+        String topCardId = JsonPath.read(
+                mockMvc.perform(post("/api/newGame"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.hand", hasSize(7)))
+                        .andExpect(jsonPath("$.drawPileCount").value(106))
+                        .andReturn()
+                        .getResponse()
+                        .getContentAsString(),
+                "$.topCard.id");
+
+        mockMvc.perform(post("/api/game/draw"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("IN_PROGRESS"))
+                .andExpect(jsonPath("$.hand", hasSize(8)))
+                .andExpect(jsonPath("$.topCard.id").value(topCardId))
+                .andExpect(jsonPath("$.drawPileCount").value(105));
     }
 }
