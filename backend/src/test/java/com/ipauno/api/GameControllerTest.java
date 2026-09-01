@@ -1,12 +1,17 @@
 package com.ipauno.api;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.jayway.jsonpath.JsonPath;
+import com.ipauno.game.CardView;
+import com.ipauno.game.GameService;
+import com.ipauno.game.GameView;
+import java.util.Random;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,9 @@ class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private GameService gameService;
 
     // @SpringBootTest reuses one GameService bean for every test in this class. Other
     // tests call POST /api/newGame, which would leave a game in memory and make a 404
@@ -98,5 +106,33 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.hand", hasSize(8)))
                 .andExpect(jsonPath("$.topCard.id").value(topCardId))
                 .andExpect(jsonPath("$.drawPileCount").value(105));
+    }
+
+    @Test
+    void playReturnsUpdatedViewForLegalCard() throws Exception {
+        GameView initialView = gameService.startNewGame(new Random(42)).toGameView();
+        CardView legalCard = initialView.hand()
+                .stream()
+                .filter(card -> matchingFeatureCount(card, initialView.topCard()) >= 2)
+                .findFirst()
+                .orElseThrow();
+
+        mockMvc.perform(
+                post("/api/game/play")
+                        .contentType(APPLICATION_JSON)
+                        .content("{\"cardId\":\"%s\"}".formatted(legalCard.id())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("IN_PROGRESS"))
+                .andExpect(jsonPath("$.hand", hasSize(6)))
+                .andExpect(jsonPath("$.topCard.id").value(legalCard.id()))
+                .andExpect(jsonPath("$.drawPileCount").value(initialView.drawPileCount()));
+    }
+
+    private static int matchingFeatureCount(CardView first, CardView second) {
+        int count = 0;
+        count += first.manner() == second.manner() ? 1 : 0;
+        count += first.place() == second.place() ? 1 : 0;
+        count += first.voicing() == second.voicing() ? 1 : 0;
+        return count;
     }
 }

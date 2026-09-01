@@ -49,4 +49,31 @@ class GameServiceTest {
 
         assertEquals("No game in progress", exception.getMessage());
     }
+
+    @Test
+    void playUpdatesAndReturnsTheCurrentGameView() {
+        GameService service = new GameService();
+        Game game = service.startNewGame(new Random(42));
+        GameView initialView = game.toGameView();
+        CardView legalCard = initialView.hand()
+                .stream()
+                .filter(card -> matchingFeatureCount(card, initialView.topCard()) >= 2)
+                .findFirst()
+                .orElseThrow();
+
+        GameView view = service.play(legalCard.id());
+
+        assertEquals(6, view.hand().size());
+        assertEquals(legalCard, view.topCard());
+        assertEquals(initialView.drawPileCount(), view.drawPileCount());
+        assertEquals(game.toGameView(), view);
+    }
+
+    private static int matchingFeatureCount(CardView first, CardView second) {
+        int count = 0;
+        count += first.manner() == second.manner() ? 1 : 0;
+        count += first.place() == second.place() ? 1 : 0;
+        count += first.voicing() == second.voicing() ? 1 : 0;
+        return count;
+    }
 }

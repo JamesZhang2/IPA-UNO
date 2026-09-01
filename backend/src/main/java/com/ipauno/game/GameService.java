@@ -31,4 +31,10 @@ public class GameService {
         game.draw();
         return game.toGameView();
     }
+
+    public GameView play(String cardId) {
+        Game game = getCurrentGame().orElseThrow(GameNotFoundException::new);
+        game.play(cardId);
+        return game.toGameView();
+    }
 }
