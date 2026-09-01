@@ -1,6 +1,7 @@
 package com.ipauno.api;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,7 +12,12 @@ import com.jayway.jsonpath.JsonPath;
 import com.ipauno.game.CardView;
 import com.ipauno.game.GameService;
 import com.ipauno.game.GameView;
+import com.ipauno.model.FeatureMatcher;
+import com.ipauno.model.PulmonicConsonant;
+import com.ipauno.model.PulmonicConsonantCatalog;
+import java.util.Set;
 import java.util.Random;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +56,16 @@ class GameControllerTest {
         @Test
         void drawReturns404() throws Exception {
             mockMvc.perform(post("/api/game/draw"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("No game in progress"));
+        }
+
+        @Test
+        void playReturns404() throws Exception {
+            mockMvc.perform(
+                    post("/api/game/play")
+                            .contentType(APPLICATION_JSON)
+                            .content("{\"cardId\":\"p#0\"}"))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.message").value("No game in progress"));
         }
@@ -126,6 +142,115 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.hand", hasSize(6)))
                 .andExpect(jsonPath("$.topCard.id").value(legalCard.id()))
                 .andExpect(jsonPath("$.drawPileCount").value(initialView.drawPileCount()));
+    }
+
+    @Test
+    void playReturns400ForUnknownCardWithoutChangingState() throws Exception {
+        GameView initialView = startFixedGame();
+
+        mockMvc.perform(
+                post("/api/game/play")
+                        .contentType(APPLICATION_JSON)
+                        .content("{\"cardId\":\"not-a-card\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Unknown card"));
+
+        assertEquals(initialView, gameService.getCurrentGameView().orElseThrow());
+    }
+
+    @Test
+    void playReturns400ForCardNotInHandWithoutChangingState() throws Exception {
+        GameView initialView = startFixedGame();
+        Set<String> handIds = initialView.hand()
+                .stream()
+                .map(CardView::id)
+                .collect(Collectors.toSet());
+        String cardNotInHand = PulmonicConsonantCatalog.createDeck()
+                .stream()
+                .map(PulmonicConsonant::id)
+                .filter(id -> !handIds.contains(id))
+                .findFirst()
+                .orElseThrow();
+
+        mockMvc.perform(
+                post("/api/game/play")
+                        .contentType(APPLICATION_JSON)
+                        .content("{\"cardId\":\"%s\"}".formatted(cardNotInHand)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Card not in hand"));
+
+        assertEquals(initialView, gameService.getCurrentGameView().orElseThrow());
+    }
+
+    @Test
+    void playReturnsDescriptive400ForIllegalMatchWithoutChangingState() throws Exception {
+        GameView initialView = startFixedGame();
+        CardView illegalCard = initialView.hand()
+                .stream()
+                .filter(card -> matchingFeatureCount(card, initialView.topCard()) < 2)
+                .findFirst()
+                .orElseThrow();
+        String expectedMessage = FeatureMatcher.explainIllegalPlay(
+                toCard(illegalCard),
+                toCard(initialView.topCard()));
+
+        mockMvc.perform(
+                post("/api/game/play")
+                        .contentType(APPLICATION_JSON)
+                        .content("{\"cardId\":\"%s\"}".formatted(illegalCard.id())))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(expectedMessage));
+
+        assertEquals(initialView, gameService.getCurrentGameView().orElseThrow());
+    }
+
+    @Test
+    void playReturns400ForMissingCardIdWithoutChangingState() throws Exception {
+        GameView initialView = startFixedGame();
+
+        mockMvc.perform(post("/api/game/play").contentType(APPLICATION_JSON).content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("cardId is required"));
+
+        assertEquals(initialView, gameService.getCurrentGameView().orElseThrow());
+    }
+
+    @Test
+    void playReturns400ForMissingBodyWithoutChangingState() throws Exception {
+        GameView initialView = startFixedGame();
+
+        mockMvc.perform(post("/api/game/play").contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Request body is missing or malformed"));
+
+        assertEquals(initialView, gameService.getCurrentGameView().orElseThrow());
+    }
+
+    @Test
+    void playReturns400ForMalformedBodyWithoutChangingState() throws Exception {
+        GameView initialView = startFixedGame();
+
+        mockMvc.perform(
+                post("/api/game/play")
+                        .contentType(APPLICATION_JSON)
+                        .content("{not-json}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Request body is missing or malformed"));
+
+        assertEquals(initialView, gameService.getCurrentGameView().orElseThrow());
+    }
+
+    private GameView startFixedGame() {
+        return gameService.startNewGame(new Random(42)).toGameView();
+    }
+
+    private static PulmonicConsonant toCard(CardView view) {
+        return new PulmonicConsonant(
+                view.id(),
+                view.manner(),
+                view.place(),
+                view.voicing(),
+                view.symbol());
     }
 
     private static int matchingFeatureCount(CardView first, CardView second) {

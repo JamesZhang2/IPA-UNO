@@ -9,10 +9,16 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Game {
 
     private static final int HAND_SIZE = 7;
+    private static final Set<String> KNOWN_CARD_IDS = PulmonicConsonantCatalog.createDeck()
+            .stream()
+            .map(PulmonicConsonant::id)
+            .collect(Collectors.toUnmodifiableSet());
 
     private final List<PulmonicConsonant> hand;
     // The last card in the draw pile is the next card to be drawn.
@@ -94,6 +100,10 @@ public class Game {
     }
 
     private PulmonicConsonant getUniqueCardInHand(String cardId) {
+        if (!KNOWN_CARD_IDS.contains(cardId)) {
+            throw new IllegalGameActionException("Unknown card");
+        }
+
         PulmonicConsonant match = null;
         for (PulmonicConsonant card : hand) {
             if (!card.id().equals(cardId)) {

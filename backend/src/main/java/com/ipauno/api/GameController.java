@@ -3,6 +3,7 @@ package com.ipauno.api;
 import com.ipauno.game.GameNotFoundException;
 import com.ipauno.game.GameService;
 import com.ipauno.game.GameView;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +36,7 @@ public class GameController {
     }
 
     @PostMapping("/game/play")
-    public GameView play(@RequestBody PlayCardRequest request) {
+    public GameView play(@Valid @RequestBody PlayCardRequest request) {
         return gameService.play(request.cardId());
     }
 }

@@ -1,4 +1,6 @@
 package com.ipauno.api;
 
-public record PlayCardRequest(String cardId) {
+import jakarta.validation.constraints.NotBlank;
+
+public record PlayCardRequest(@NotBlank(message = "cardId is required") String cardId) {
 }

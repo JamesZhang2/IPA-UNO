@@ -35,6 +35,19 @@ class GamePlayTest {
     }
 
     @Test
+    void playRejectsUnknownCard() {
+        Game game = Game.fromState(List.of(P), List.of(), List.of(T), GameStatus.IN_PROGRESS);
+
+        IllegalGameActionException error = assertThrows(
+                IllegalGameActionException.class,
+                () -> game.play("not-a-card"));
+
+        assertEquals("Unknown card", error.getMessage());
+        assertEquals(List.of("p#0"), handIds(game));
+        assertEquals("t#0", game.getDiscardPileTop().id());
+    }
+
+    @Test
     void playRejectsIllegalFeatureMatchWithDescriptiveMessage() {
         Game game = Game.fromState(List.of(B), List.of(), List.of(T), GameStatus.IN_PROGRESS);
 
